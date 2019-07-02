@@ -321,6 +321,11 @@ class Element
         return $this->toDocument()->first($expression, $type, $wrapNode);
     }
 
+	public function second($expression, $type = Query::TYPE_CSS, $wrapNode = true)
+	{
+		return $this->toDocument()->second($expression, $type, $wrapNode);
+	}
+
     /**
      * Searches for an node in the owner document using current node as context and returns first element or null.
      *
@@ -340,6 +345,17 @@ class Element
 
         return $ownerDocument->first($expression, $type, $wrapNode, $this->node);
     }
+
+	public function secondInDocument($expression, $type = Query::TYPE_CSS, $wrapNode = true)
+	{
+		$ownerDocument = $this->getDocument();
+
+		if ($ownerDocument === null) {
+			throw new LogicException('Can not search in context without owner document');
+		}
+
+		return $ownerDocument->second($expression, $type, $wrapNode, $this->node);
+	}
 
     /**
      * Searches for an node in the DOM tree for a given XPath expression.

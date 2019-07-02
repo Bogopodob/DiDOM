@@ -473,6 +473,26 @@ class Document
         return $wrapNode ? $this->wrapNode($nodes[0]) : $nodes[0];
     }
 
+	public function second($expression, $type = Query::TYPE_CSS, $wrapNode = true, $contextNode = null)
+	{
+		$expression = Query::compile($expression, $type);
+
+		if ($contextNode !== null && $type === Query::TYPE_CSS) {
+			$expression = '.' . $expression;
+		}
+
+		$nodes = $this->find($expression, Query::TYPE_XPATH, false, $contextNode);
+
+		if (count($nodes) === 0) {
+			return null;
+		}
+		else if (count($nodes) < 2) {
+			return NULL;
+		}
+
+		return $wrapNode ? $this->wrapNode($nodes[1]) : $nodes[1];
+	}
+
     /**
      * @param \DOMElement|\DOMText|\DOMAttr $node
      *
