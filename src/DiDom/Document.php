@@ -493,6 +493,33 @@ class Document
 		return $wrapNode ? $this->wrapNode($nodes[1]) : $nodes[1];
 	}
 
+	public function one($expression) : Element {
+		$elements = $this->find($expression);
+
+		if (count($elements) === 0) {
+			throw new \LogicException("Нет элеметов");
+		}
+
+		if (count($elements) !== 1) {
+			throw new \LogicException("Больше одного элемета");
+		}
+
+		return $elements[0];
+	}
+
+	public function oneOrNull($expression) :? Element {
+		$elements = $this->find($expression);
+		if (count($elements) === 0) {
+			return NULL;
+		}
+
+		if (count($elements) === 1) {
+			return $elements[0];
+		}
+
+		throw new \LogicException("Больше одного элемета");
+	}
+
     /**
      * @param \DOMElement|\DOMText|\DOMAttr $node
      *

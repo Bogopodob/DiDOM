@@ -326,6 +326,16 @@ class Element
 		return $this->toDocument()->second($expression, $type, $wrapNode);
 	}
 
+	public function one($expression)
+	{
+		return $this->toDocument()->one($expression);
+	}
+
+	public function oneOrNull($expression)
+	{
+		return $this->toDocument()->oneOrNull($expression);
+	}
+
     /**
      * Searches for an node in the owner document using current node as context and returns first element or null.
      *
@@ -355,6 +365,35 @@ class Element
 		}
 
 		return $ownerDocument->second($expression, $type, $wrapNode, $this->node);
+	}
+
+	public function oneInDocument($expression)
+	{
+		$elements = $this->getDocument()->find($expression);
+
+		if (count($elements) === 0) {
+			throw new \LogicException("Нет элеметов");
+		}
+
+		if (count($elements) !== 1) {
+			throw new \LogicException("Больше одного элемета");
+		}
+
+		return $elements[0];
+	}
+
+	public function oneOrNullInDocument($expression)
+	{
+		$elements = $this->getDocument()->find($expression);
+		if (count($elements) === 0) {
+			return NULL;
+		}
+
+		if (count($elements) === 1) {
+			return $elements[0];
+		}
+
+		throw new \LogicException("Больше одного элемета");
 	}
 
     /**
